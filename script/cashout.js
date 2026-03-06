@@ -8,10 +8,9 @@ document.getElementById("cashout-btn").addEventListener("click", function() {
     // Get the cashout amount
     const cashoutAmount = getValueFromInput("cashout-amount");
     // Get the current balance
-    const balanceElement = document.getElementById("balance");
-    const balance = balanceElement.innerText;
+    const currentBalance = getBalance();
     // Balance calculate
-    const newBalance = Number(balance) - Number(cashoutAmount);
+    const newBalance = currentBalance - Number(cashoutAmount);
     if(newBalance < 0){
         alert("Invalid Amount");
         return;
@@ -20,11 +19,24 @@ document.getElementById("cashout-btn").addEventListener("click", function() {
     const cashoutPin = getValueFromInput("cashout-pin");
     if(cashoutPin === "1234"){
         alert("Cashout successfull");
-        balanceElement.innerText = newBalance;
+        setBalance(newBalance);
     } else {
         alert("Invalid pin");
         return;
     }
+
+    // Get the history div
+    const history = document.getElementById("history-container");
+    // Create new div
+    const newHistory = document.createElement("div");
+    // Add inner HTML
+    newHistory.innerHTML = `
+        <div class="transaction-card p-5 bg-base-100">
+            Cashout success to acc-${agentNumber} to <b>${cashoutAmount} BDT</b> at ${new Date()}
+        </div>
+    `
+    // Append to history div
+    history.append(newHistory);
 
 });
 
